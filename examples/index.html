@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <table>
+    <thead>
+      <tr>
+        <th>Info</th>
+      </tr>
+    </thead>
+    <tbody id="info"></tbody>
+  </table>
+  <script type="text/javascript" src="../dist/app.bundle.js"></script>
+  <script>
+    const omdb = new OmdbapiWrapper.default({
+      key: 'your-key-here',
+    });
+
+    const search = omdb.searchByTitle('avengers');
+    const placement = document.getElementById('info');
+
+    search.then((res) => {
+      const values = Object.values(res);
+
+      markup = values.map(item =>
+        `
+        <tr>
+          <td>${item}</td>
+        </tr>`
+      ).join('');
+
+      placement.innerHTML = markup;
+    });
+  </script>
+</body>
+</html>

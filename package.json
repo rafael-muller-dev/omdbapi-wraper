@@ -2,13 +2,17 @@
   "name": "omdbapi-wrapper",
   "version": "1.0.0",
   "description": "A simple omdbapi wrapper",
-  "main": "src/index.js",
+  "main": "lib/main.js",
   "scripts": {
     "prepush": "npm run lint",
     "lint": "./node_modules/.bin/eslint src/*.js",
-    "build:dev": "./node_modules/.bin/webpack --colors --progress",
-    "build:prod": "npm run build:dev -- --mode production",
-    "watch": "npm run build:dev -- --watch",
+    "clear": "rimraf lib",
+    "build": "npm run clear && ./node_modules/.bin/babel --out-dir lib src",
+    "build:watch": "npm run build -- --watch",
+    "build:umd:dev": "./node_modules/.bin/webpack --colors --progress",
+    "build:umd:prod": "npm run build:dev -- --mode production",
+    "build:umd:watch": "npm run build:dev -- --watch",
+    "build:all": "npm run build && npm run build:umd:dev",
     "start": "./node_modules/.bin/webpack-dev-server --progress --inline --hot --open",
     "test": "jest",
     "test:tdd": "jest --watch",
@@ -16,21 +20,27 @@
     "test:tdd:coverage": "jest --coverage --watch",
     "coveralls": "node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
+  "files": [
+    "dist",
+    "lib"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rafael-muller-dev/boilerplate.git"
+    "url": "git+https://github.com/rafael-muller-dev/omdbapi-wrapper.git"
   },
   "author": "Rafael Müller <rafael.muller.dev@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rafael-muller-dev/boilerplate/issues"
+    "url": "https://github.com/rafael-muller-dev/omdbapi-wrapper/issues"
   },
-  "homepage": "https://github.com/rafael-muller-dev/boilerplate#readme",
+  "homepage": "https://github.com/rafael-muller-dev/omdbapi-wrapper#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-jest": "^22.4.3",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
     "coveralls": "^3.0.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
@@ -38,7 +48,10 @@
     "html-webpack-plugin": "^3.2.0",
     "husky": "^0.14.3",
     "jest": "^22.4.3",
+    "jest-fetch-mock": "^1.5.0",
+    "node-fetch": "^2.1.2",
     "regenerator-runtime": "^0.11.1",
+    "rimraf": "^2.6.2",
     "webpack": "^4.7.0",
     "webpack-cli": "^2.1.2",
     "webpack-dev-server": "^3.1.4"
